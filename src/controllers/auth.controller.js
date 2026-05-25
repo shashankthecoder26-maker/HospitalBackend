@@ -3,6 +3,23 @@ const bcrypt = require("bcryptjs");
 
 const pool = require("../config/db");
 
+const authService = require("../services/auth.service");
+
+exports.register = async (req, res) => {
+  try {
+    const user = await authService.register(req.body);
+
+    res.status(201).json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;

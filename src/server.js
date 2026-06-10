@@ -18,11 +18,13 @@ const authRoutes = require("./routes/auth.routes");
 const appointmentRoutes = require("./routes/appointment.routes");
 const medicalRecordRoutes =
   require("./routes/medicalRecord.routes");
-
+  const patientRoutes = require("./routes/patientRoutes");
+const departmentRoutes = require("./routes/departmentRoutes");
 app.use("/auth", authRoutes);
 app.use("/appointments", appointmentRoutes);
 app.use("/medical-records", medicalRecordRoutes);
-
+app.use("/departments", departmentRoutes);
+app.use("/patients", patientRoutes);
 app.get("/test-db", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");

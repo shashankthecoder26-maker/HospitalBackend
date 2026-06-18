@@ -29,5 +29,8 @@ router.patch(
   roleMiddleware("doctor"),
   appointmentController.updateAppointmentStatus
 );
-
+router.get(
+  "/doctor/:doctorId/slots",
+  appointmentController.getAvailableSlots
+);
 module.exports = router;

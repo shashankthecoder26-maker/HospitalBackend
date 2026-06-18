@@ -80,3 +80,23 @@ exports.updateAppointmentStatus = async (
 
   return result.rows[0];
 };
+
+exports.findBookedSlots = async (
+  doctorId,
+  date
+) => {
+
+    const result = await pool.query(
+    `
+    SELECT appointment_time
+    FROM appointments
+    WHERE doctor_id = $1
+    AND appointment_date = $2
+    `,
+    [doctorId, date]
+  );
+
+  return result.rows;
+
+};
+

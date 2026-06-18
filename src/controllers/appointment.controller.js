@@ -62,3 +62,33 @@ exports.updateAppointmentStatus = async (
     });
   }
 };
+
+
+exports.getAvailableSlots = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const slots =
+      await appointmentService.getAvailableSlots(
+        req.params.doctorId,
+        req.query.date
+      );
+
+    res.json({
+      success: true,
+      data: slots
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+
+};

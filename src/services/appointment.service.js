@@ -1,5 +1,5 @@
 const appointmentRepository = require("../repositories/appointment.repository");
-
+const doctorRepository = require("../repositories/doctorRepository");
 exports.bookAppointment = async (data) => {
   // validate slot
   // check doctor availability
@@ -50,4 +50,54 @@ exports.updateAppointmentStatus = async (
     appointment_id,
     status
   );
+};
+
+
+exports.getAvailableSlots = async (
+  doctorId,
+  date
+) => {
+
+  const doctor =
+    await doctorRepository.getDoctorById(
+      doctorId
+    );
+
+  const bookedSlots =
+    await appointmentRepository.findBookedSlots(
+      doctorId,
+      date
+    );
+
+  const bookedTimes = bookedSlots.map(
+    slot => slot.appointment_time
+  );
+
+  let slots = [];
+
+  let current = new Date(
+    `1970-01-01T${doctor.start_time}`
+  );
+
+  const end = new Date(
+    `1970-01-01T${doctor.end_time}`
+  );
+
+  while (current < end) {
+
+    const time = current
+      .toTimeString()
+      .slice(0, 8);
+
+    if (!bookedTimes.includes(time)) {
+      slots.push(time);
+    }
+
+    current.setMinutes(
+      current.getMinutes() +
+      doctor.slot_duration
+    );
+  }
+slots.sort();
+  return slots;
 };
